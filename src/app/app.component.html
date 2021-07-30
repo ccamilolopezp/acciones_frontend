@@ -1,0 +1,25 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav-content>
+        <mat-toolbar *ngIf="currentUser" color="primary" class="mat-elevation-z4">
+            <img alt="avtar" class="img-fluid mx-auto d-block mb-1" src="./assets/img/logo-bta-png.png" width="150">
+            <span class="example-spacer"></span>
+            <mat-progress-spinner *ngIf="!endloading" diameter="30" class="example-margin" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+            </mat-progress-spinner>
+            <h5 *ngIf="endloading">CONTROL INTERNO</h5>
+            <mat-icon *ngIf="endloading" style="font-size: 30px; width: auto; height: auto;" [matMenuTriggerFor]="beforeMenu" class="animated fadeIn">more_vert</mat-icon>
+            <mat-menu #beforeMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Salir</span>
+              </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item style="text-align: center; font-size: 14px; font-weight: bold;">
+                <mat-icon style="color: black; margin-right: 5px;">copyright</mat-icon>
+                <span style="color: black;">SDIS</span>
+              </button>
+            </mat-menu>
+        </mat-toolbar>
+        <!-- Add Content Here -->
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

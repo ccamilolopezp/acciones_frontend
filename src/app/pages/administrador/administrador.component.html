@@ -1,0 +1,104 @@
+<div class="container animated fadeIn" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center" style="margin-bottom: 3%;  margin-top: 30px;" *ngIf="endloading">
+    <!-- <div fxFlex="50%">
+        <div class="container animated fadeIn" fxLayout="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center" style="margin-bottom: 3%;" *ngIf="endloading">
+            <div fxFlex="100%">
+                <mat-card class="mat-elevation-z4 card-home">
+                    <mat-card-header>
+                        <mat-card-title style="color: #f9a11b;">Solicitudes de Servicio</mat-card-title>
+                        <mat-card-subtitle style="color: #000;">Consulta y gestiona casos/solicitudes de servicio</mat-card-subtitle>
+                        <span class="example-spacer"></span>
+                        <span style="color: grey; font-size: 14px;">{{nombrePerfil}}</span>
+                    </mat-card-header>
+                    <mat-card-content style="margin: 0 16px;">
+                    </mat-card-content>
+                    <mat-card-actions style="margin: 0 8px;">
+                        <div class='test'>
+                            <div style='float: left;'>
+                                <button mat-raised-button (click)="salir()" matTooltip="Cerrar Sesión">
+                                    Salir
+                                </button>
+                            </div>
+                            <div style='float: right;'>
+                                <button mat-raised-button class="btn-black" (click)="IrSolicitudesServicio()" style="font-size: 14px;" [disabled]='!endrefresh' matTooltip="Actualizar Información">
+                                    Ingresar
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+        <div class="container animated fadeIn" fxLayout="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center" style="margin-bottom: 3%;" *ngIf="endloading">
+            <div fxFlex="100%">
+                <mat-card class="mat-elevation-z4 card-home">
+                    <mat-card-header>
+                        <mat-card-title style="color: #f9a11b;">Reporte general</mat-card-title>
+                        <mat-card-subtitle style="color: #000;">Visualiza el reporte general de información</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content style="margin: 0 16px;">
+                    </mat-card-content>
+                    <mat-card-actions style="margin: 0 8px;">
+                        <div class='test'>
+                            <div style='float: right;'>
+                                <button mat-raised-button class="btn-black" (click)="IrAReporte()" style="font-size: 14px;" [disabled]='!endrefresh' matTooltip="Actualizar Información">
+                                    Ingresar
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div fxFlex="50%" *ngIf="nombrePerfil === 'ADMINISTRADORES'"> -->
+    <div fxFlex="50%">
+        <div class="container animated fadeIn" fxLayout="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center" style="margin-bottom: 3%;" *ngIf="endloading">
+            <div fxFlex="100%">
+                <mat-card class="mat-elevation-z4 card-home">
+                    <mat-card-header>
+                        <mat-card-title style="color: #f9a11b;">Usuarios</mat-card-title>
+                        <mat-card-subtitle style="color: #000;">Consulta y gestiona usuarios del sistema</mat-card-subtitle>
+                        <span class="example-spacer"></span>
+                        <!-- <span style="color: grey; font-size: 14px;">{{nombrePerfil}}</span> -->
+                    </mat-card-header>
+                    <mat-card-content style="margin: 0 16px;">
+                    </mat-card-content>
+                    <mat-card-actions style="margin: 0 8px;">
+                        <div class='test'>
+                            <div style='float: right;'>
+                                <button mat-raised-button class="btn-black" (click)="IrUsuarios()" style="font-size: 14px;" [disabled]='!endrefresh' matTooltip="Actualizar Información">
+                                    Ingresar
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+    <div fxFlex="50%">
+        <div class="container animated fadeIn" fxLayout="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center" style="margin-bottom: 3%;" *ngIf="endloading">
+            <div fxFlex="100%">
+                <mat-card class="mat-elevation-z4 card-home">
+                    <mat-card-header>
+                        <mat-card-title style="color: #f9a11b;">Hallazgos</mat-card-title>
+                        <mat-card-subtitle style="color: #000;">Administración de hallazgos</mat-card-subtitle>
+                        <span class="example-spacer"></span>
+                        <!-- <span style="color: grey; font-size: 14px;">{{nombrePerfil}}</span> -->
+                    </mat-card-header>
+                    <mat-card-content style="margin: 0 16px;">
+                    </mat-card-content>
+                    <mat-card-actions style="margin: 0 8px;">
+                        <div class='test'>
+                            <div style='float: right;'>
+                                <button mat-raised-button class="btn-black" (click)="IrHallazgos()" style="font-size: 14px;" [disabled]='!endrefresh' matTooltip="Actualizar Información">
+                                    Ingresar
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

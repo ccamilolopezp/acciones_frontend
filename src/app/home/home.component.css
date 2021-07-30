@@ -1,0 +1,26 @@
+.card-home {
+  background-color: #ffffff00;
+  padding: 10px;
+  border-style: solid;
+  border-color: #7d7d7d;
+  min-height: 150px;
+  border-width: 1px;
+}
+
+.test {
+  width:100%;
+  display:inline-block;
+  white-space: nowrap;
+  /* margin:5px auto; */
+}
+
+/* ::ng-deep .mat-card-header-text {
+  margin: 0 36px !important;
+} */
+
+::ng-deep .mat-progress-bar-fill::after {
+  background-color: #000;
+}
+::ng-deep .mat-progress-bar-buffer {
+  background: #E4E8EB !important;
+}

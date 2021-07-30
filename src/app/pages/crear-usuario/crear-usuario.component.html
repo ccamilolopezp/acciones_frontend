@@ -1,0 +1,119 @@
+<div fxLayoutAlign="center" style="margin-bottom: 3%;  margin-top: 20px;">
+    <mat-card style="width: 95% !important" class="mat-elevation-z6">
+        <mat-card-header>
+            <mat-card-title *ngIf="!infoedit">Crear Usuario</mat-card-title>
+            <mat-card-title *ngIf="infoedit">Modificar Usuario</mat-card-title>
+            <mat-card-subtitle *ngIf="!infoedit" style="color: #000;">
+                Asociar un usuario al sistema
+            </mat-card-subtitle>
+            <mat-card-subtitle *ngIf="infoedit" style="color: #000;">
+                Editar un usuario del sistema
+            </mat-card-subtitle>
+            <span class="example-spacer"></span>
+            <button mat-raised-button *ngIf="endloading" (click)="Volver()" matTooltip="Cerrar Ventana" style="margin: 0 16px; height: 40px;">
+                Cerrar
+            </button>
+            <mat-progress-spinner *ngIf="!endloading" diameter="30" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+            </mat-progress-spinner>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-card class="mat-elevation-z4" *ngIf="!infoedit">
+                <mat-card-header>
+                    <mat-card-title style="display: flex; align-items: center;">
+                        <mat-icon style="font-size: 30px; margin-right: 10px;" mat-list-icon>filter_alt</mat-icon>
+                        <span> Consulta en Directorio Activo</span>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="container animated fadeIn"
+                    fxLayout="row" fxLayout.xs="column" fxLayout.sm="column"
+                    fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="start"
+                    style="margin-top: 15px;" *ngIf="endloading">
+                        <div fxFlex="50%">
+                            <mat-form-field style="width: 100%;">
+                                <input cdkFocusInitial matInput type="text" placeholder="Busca por nombre de usuario" [formControl]="correoCtrl" required>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="10%">
+                            <button mat-raised-button (click)="BuscarEnAD()" style="font-size: 14px; margin-right: 15px;">
+                                <mat-icon style="font-size: 20px;">search</mat-icon>Buscar
+                            </button>
+                        </div>
+                        <div fxFlex="40%" *ngIf="hayDatos === 0 && endloading" style="color: chocolate;">
+                            <mat-card-title style="display: flex; align-items: center;">
+                                <mat-icon style="font-size: 30px; margin-right: 10px;" mat-list-icon>not_interested</mat-icon>
+                                <span> No encontrado</span>
+                            </mat-card-title>
+                        </div>
+                        <div fxFlex="40%" *ngIf="hayDatos === 1 && endloading" style="color: green;">
+                            <mat-card-title style="display: flex; align-items: center;">
+                                <mat-icon style="font-size: 30px; margin-right: 10px;" mat-list-icon>check_circle_outline</mat-icon>
+                                <span> Encontrado</span>
+                            </mat-card-title>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <div *ngIf="hayDatos === 1 && endloading">
+                <mat-list >
+                    <mat-list-item style="color: #000;">
+                        <mat-icon mat-list-icon>list_alt</mat-icon>
+                        <h4 mat-line>Resultado</h4>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                </mat-list>
+                <form [formGroup]="basicaForm" id="basicfrm" class="example-form" novalidate>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%"
+                        fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput placeholder="Correo" formControlName="correo">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            
+                        </div>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput placeholder="Nombre" formControlName="nombre">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput placeholder="Apellido" formControlName="apellido">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput placeholder="N. Documento" formControlName="numero_documento">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Perfil</mat-label>
+                                <mat-select formControlName="perfil" required>
+                                    <mat-option *ngFor="let item of datagrupos" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayoutAlign="center">
+                        <button mat-raised-button style="color: white; height: 40px; font-size: 20px;" color="primary" (click)="AsociarUsuario()">
+                            <span>Guardar</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="end" style="margin: 8px;">
+        </mat-card-actions>
+    </mat-card>
+    <input type="hidden" #selection>
+</div>

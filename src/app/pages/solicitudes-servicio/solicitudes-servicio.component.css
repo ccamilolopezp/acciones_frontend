@@ -1,0 +1,134 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.btn-black {
+    font-size: 15px;
+    color: #FFF;
+    background-color: #000;
+}
+
+
+/* .card-home {
+    background-color: #ffffff00;
+    padding: 10px;
+    border-style: solid;
+    border-color: #7d7d7d;
+    min-height: 150px;
+    border-width: 1px;
+} */
+
+.myHorizontalStepper {
+    width: 100% !important;
+    background-color: transparent;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 16px;
+}
+
+.example-header {
+    margin-top: 15px;
+    min-height: 64px;
+    padding: 8px 24px 0;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.mat-table {
+    overflow: auto;
+}
+
+.mat-column-NombreEstado {
+    max-width: 10%;
+}
+
+.mat-column-id {
+    max-width: 10%;
+}
+
+.mat-column-asunto {
+    max-width: 30%;
+}
+
+.mat-column-acciones {
+    max-width: 10%;
+}
+
+.mat-header-cell,
+.mat-sort.header {
+    background-color: #000;
+    color: #FFF;
+}
+
+.mobile-label {
+    display: none;
+}
+
+ ::ng-deep .mat-mini-fab .mat-button-wrapper {
+    padding: 6px 0 !important;
+}
+
+ ::ng-deep .mat-raised-button {
+    min-width: auto !important;
+}
+
+ ::ng-deep .mat-progress-bar-fill::after {
+    background-color: #000;
+}
+
+ ::ng-deep .mat-progress-bar-buffer {
+    background: #E4E8EB !important;
+}
+
+ ::ng-deep .mat-horizontal-content-container {
+    padding: 0 10px 16px 10px !important;
+}
+
+
+/* ::ng-deep .mat-horizontal-stepper-header-container {
+    display: none !important;
+} */
+
+ ::ng-deep .mat-paginator-container {
+    justify-content: start !important;
+}
+
+ ::ng-deep .mat-input-element:disabled {
+    font-size: 16px !important;
+    color: #000 !important;
+}
+
+@media(max-width: 800px) {
+    .mobile-label {
+        width: 100px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+        min-height: 0px;
+    }
+    .mat-column-NombreEstado {
+        max-width: 100%;
+    }
+    .mat-column-acciones {
+        max-width: 100%;
+    }
+    .mat-column-id {
+        max-width: 100%;
+    }
+    .mat-column-asunto {
+        max-width: 100%;
+    }
+    .mat-cell:first-of-type {
+        padding-left: 0px;
+    }
+}

@@ -1,0 +1,131 @@
+.pageregisterstyle {
+    display: flex;
+    height: 100%;
+    margin: -1;
+}
+
+.no-records {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background: white;
+  color:brown; */
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+.content {
+    display: flex;
+    /* margin: 32px auto; */
+    padding: 0 16px;
+    /* max-width: 960px; */
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-green {
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #2bb673;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 400px;
+    width: 100%;
+    margin-top: 16px;
+    /* padding-top: 25px; */
+}
+
+.backgroundLoading {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.overlay {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.card-container {
+    display: grid;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.example-margin {
+    /* margin-top: 15px; */
+    margin: 0 10px;
+    width: 25%;
+}
+
+footer {
+    margin-top: 8px;
+    display: flex;
+    /* align-items: center; */
+    line-height: 20px;
+}
+
+footer a {
+    display: flex;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 0%;
+}
+
+
+/* ::ng-deep .mat-progress-bar-fill::after {
+  background-color: #000;
+}
+::ng-deep .mat-progress-bar-buffer {
+  background: #E4E8EB !important;
+} */
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: #000000;
+}
+
+@media screen and (max-width: 1200px) {
+    #contentform {
+        width: 100% !important;
+    }
+    #imglogin {
+        display: none !important;
+    }
+    #contentloading {
+        width: 100% !important;
+    }
+    #contentserveroff {
+        width: 100% !important;
+    }
+    #contentlogin {
+        width: 100% !important;
+    }
+    #contentGetPass {
+        width: 100% !important;
+    }
+    #contentregister {
+        width: 100% !important;
+    }
+    #contentcompleteregister {
+        width: 100% !important;
+    }
+}

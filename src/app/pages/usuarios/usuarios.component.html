@@ -1,0 +1,127 @@
+<div fxLayoutAlign="center" style="margin-bottom: 3%;  margin-top: 20px;">
+    <mat-card style="width: 95% !important" class="mat-elevation-z6">
+        <mat-card-header>
+            <mat-card-title>Usuario</mat-card-title>
+            <mat-card-subtitle style="color: #000;">
+                Aquí puedes gestionar los usuarios del sistema
+            </mat-card-subtitle>
+            <span class="example-spacer"></span>
+            <button mat-raised-button style="color: white; height: 40px;" color="primary" (click)="IraCrearUsuario()">
+                Crear
+            </button>
+            <button mat-raised-button (click)="Salir()" matTooltip="Cerrar Ventana" style="margin: 0 16px; height: 40px;">
+              Cerrar
+            </button>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon mat-list-icon>filter_alt</mat-icon>
+                        <span style="font-size: 18px;">Consulta General</span>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Seleccione críterios de búsqueda
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="container animated fadeIn" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center" style="margin-top: 15px;" *ngIf="endloading">
+                    <!-- <div fxFlex="40%">
+                        <mat-form-field style="width: 100%;">
+                            <mat-label>Seleccione un grupo</mat-label>
+                            <mat-select [formControl]="grupoCtrl">
+                                <mat-option *ngFor="let item of datagrupos" [value]="item.value">
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div> -->
+                    <div fxFlex="90%">
+                        <mat-form-field style="width: 100%;">
+                            <input matInput type="text" placeholder="Busca por correo" [formControl]="filterCtrl">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="10%">
+                        <button mat-raised-button (click)="ActualizarInformacion()" style="font-size: 14px; margin-right: 15px;">
+                            <mat-icon style="font-size: 20px;">search</mat-icon>Buscar
+                        </button>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+            <mat-list>
+                <mat-list-item style="color: #000;">
+                    <mat-icon mat-list-icon>list_alt</mat-icon>
+                    <h4 mat-line>Resultados</h4>
+                    <span class="example-spacer"></span>
+                    <mat-progress-spinner *ngIf="!endloading" diameter="30" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                    </mat-progress-spinner>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </mat-list>
+            <div *ngIf="hayDatos && endloading" class="example-header mat-elevation-z2">
+                <mat-form-field>
+                    <input [disabled]="isDisabled" matInput (keyup)="AplicarFiltros($event.target.value)" placeholder="Buscar en los resultados">
+                </mat-form-field>
+            </div>
+            <br>
+            <div class="example-container mat-elevation-z2">
+                <mat-table *ngIf="endloading" [dataSource]="origenDatos" matSort>
+                    <ng-container matColumnDef="nombre">
+                        <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Nombre:</span> {{row.nombre}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="apellido">
+                        <mat-header-cell *matHeaderCellDef>Apellido</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Apellido:</span> {{row.apellido}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="username">
+                        <mat-header-cell *matHeaderCellDef>Correo</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Correo:</span> {{row.username}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="numero_documento">
+                        <mat-header-cell *matHeaderCellDef>N. Documento</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">N. Documento:</span> {{row.numero_documento}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="NombreGrupo">
+                        <mat-header-cell *matHeaderCellDef>Grupo</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Grupo</span> {{row.NombreGrupo}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="vigente">
+                        <mat-header-cell *matHeaderCellDef> Habilitado </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Habilitado</span> {{row.vigente !== true ? 'NO' : 'SI'}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container> -->
+                    <ng-container matColumnDef="acciones">
+                        <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Acciones:</span>
+                            <button mat-icon-button matTooltip="Editar Usuario" (click)="EditarUsuario(row)" color="primary">
+                                <i class="fa fa-edit" style="font-size: 20px;"></i>
+                                EDITAR
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="columnasvisibles" class="encabezado"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: columnasvisibles;"></mat-row>
+                </mat-table>
+                <div *ngIf="!hayDatos && endloading" class="example-header" style="text-align: center;">
+                    <span style="color: grey; font-size: 18px;">Lista vacía</span>
+                </div>
+                <mat-paginator [disabled]="isDisabled" [pageSizeOptions]="[5, 10, 20, 25]" [pageSize]="5" [showFirstLastButtons]="true"></mat-paginator>
+            </div>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="end" style="margin: 8px;">.
+        </mat-card-actions>
+    </mat-card>
+    <input type="hidden" #selection>
+</div>

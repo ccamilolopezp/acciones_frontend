@@ -1,0 +1,170 @@
+<div fxLayoutAlign="center" style="margin-bottom: 3%;  margin-top: 20px;">
+    <mat-card style="width: 95% !important" class="mat-elevation-z6">
+        <mat-card-header>
+            <mat-card-title *ngIf="!infoedit">Crear Hallazgo</mat-card-title>
+            <mat-card-title *ngIf="infoedit">Modificar Hallazgo</mat-card-title>
+            <span class="example-spacer"></span>
+            <button mat-raised-button *ngIf="endloading" (click)="Volver()" matTooltip="Cerrar Ventana" style="margin: 0 16px; height: 40px;">
+                Cerrar
+            </button>
+            <mat-progress-spinner *ngIf="!endloading" diameter="30" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+            </mat-progress-spinner>
+        </mat-card-header>
+        <mat-card-content>
+            <div *ngIf="endloading">
+                <form [formGroup]="basicaForm" id="basicfrm" class="example-form" novalidate>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="100%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <textarea rows="5" matInput placeholder="Descripción" formControlName="descripcion" required></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%"
+                        fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker" placeholder="Fecha inicio"
+                                    [min]="minDate" formControlName="fechainicio" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <!-- <mat-error *ngIf="options.get('fechainicio')?.invalid">Requerido</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker2" placeholder="Fecha vencimiento"
+                                    [min]="minDate" formControlName="fechavence" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div *ngIf="infoedit" class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <p>
+                                <span style="font-weight: bold;">Fecha límite para la definición: </span><span>{{fechalimintedef | date:'MM/d/yyyy'}}</span><br>
+                                <span style="color: red;">Quedan {{diasdef}} días para definición</span>
+                            </p>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            <p>
+                                <span style="color: red;">Quedan {{diasvence}} días para vencimiento</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div *ngIf="infoedit" class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Estado</mat-label>
+                                <mat-select formControlName="estado">
+                                    <mat-option *ngFor="let item of dataestados" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Conformidad OCI</mat-label>
+                                <mat-select formControlName="conformidad">
+                                    <mat-option *ngFor="let item of dataconformidades" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput placeholder="Código o Capítulo" formControlName="capitulo" required>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker3" placeholder="Fecha identificación"
+                                    [min]="minDate" formControlName="fechaidentifica" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="100%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <textarea rows="3" matInput placeholder="Detalle origen" formControlName="detalleorigen" required></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Ubicación</mat-label>
+                                <mat-select formControlName="ubicacion" required>
+                                    <mat-option *ngFor="let item of dataubicaciones" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Origen</mat-label>
+                                <mat-select formControlName="origen" required>
+                                    <mat-option *ngFor="let item of dataorigenes" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Primer auditor encargado</mat-label>
+                                <mat-select formControlName="primerauditor" required>
+                                    <mat-option *ngFor="let item of datapersonas" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Segundo auditor encargado</mat-label>
+                                <mat-select formControlName="segundoauditor" required>
+                                    <mat-option *ngFor="let item of datapersonas" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                        <div fxFlex="50%" class="mycontainer">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Responsable del hallazgo</mat-label>
+                                <mat-select formControlName="responsable" required>
+                                    <mat-option *ngFor="let item of datapersonas" [value]="item.value">
+                                        {{item.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50%" class="mycontainer">
+                        </div>
+                    </div>
+                    <div fxLayoutAlign="center">
+                        <button mat-raised-button style="color: white; height: 40px; font-size: 20px;" color="primary" (click)="Guardar()">
+                            <span>Guardar</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="end" style="margin: 8px;">
+        </mat-card-actions>
+    </mat-card>
+    <input type="hidden" #selection>
+</div>

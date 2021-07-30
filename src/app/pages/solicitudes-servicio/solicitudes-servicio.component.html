@@ -1,0 +1,182 @@
+<div fxLayoutAlign="center" style="margin-bottom: 3%;  margin-top: 20px;">
+    <!-- <div style="width: 100%; margin: 20px;"> -->
+    <!--<mat-horizontal-stepper linear #stepper class="myHorizontalStepper">
+         <mat-step style="width: 90% !important" completed="false"> -->
+    <!-- <div class="myHorizontalStepper"> -->
+    <mat-card style="width: 95% !important" class="mat-elevation-z6">
+        <mat-card-header>
+            <mat-card-title>Solicitudes de servicio</mat-card-title>
+            <mat-card-subtitle style="color: #000;">
+                Aquí puedes gestionar las solicitudes de servicio
+            </mat-card-subtitle>
+            <span class="example-spacer"></span>
+            <button mat-raised-button style="color: white; height: 40px;" color="primary" (click)="IrCrearSolicitud()">
+                    Crear
+                  </button>
+            <button mat-raised-button (click)="Salir()" matTooltip="Cerrar Ventana" style="margin: 0 16px; height: 40px;">
+              Cerrar
+            </button>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-expansion-panel [expanded]="false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon mat-list-icon>filter_alt</mat-icon>
+                        <span style="font-size: 18px;">Consulta General</span>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Seleccione críterios de búsqueda
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="container animated fadeIn" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center" style="margin-top: 15px;" *ngIf="endloading">
+                    <div fxFlex="40%">
+                        <mat-form-field style="width: 100%;">
+                            <mat-label>Seleccione un estado</mat-label>
+                            <mat-select [formControl]="inteUnoCtrl" required>
+                                <mat-option *ngFor="let item of listaestados" [value]="item.value">
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%">
+                        <mat-form-field style="width: 100%;">
+                            <input matInput type="text" placeholder="Busca por número de caso" [formControl]="filterCtrl">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="10%">
+                        <button mat-raised-button (click)="ActualizarInformacion()" style="font-size: 14px; margin-right: 15px;">
+                            <mat-icon style="font-size: 20px;">search</mat-icon>Buscar
+                        </button>
+                    </div>
+                    
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon mat-list-icon>filter_alt</mat-icon>
+                        <span style="font-size: 18px;">Consultas Directas</span>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Seleccione una opción
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="container animated fadeIn" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center" style="margin-top: 15px;" *ngIf="endloading">
+                    <div fxFlex="25%">
+                        <button mat-raised-button class="btn-black" (click)="ActualizarInformacionCasos()" style="font-size: 14px;">
+                            <mat-icon style="font-size: 20px;">person_outline</mat-icon>Mis casos abiertos
+                        </button>
+                    </div>
+                    <div fxFlex="25%">
+                        <button mat-raised-button class="btn-black" (click)="ActualizarInformacionCasos(true)" style="font-size: 14px;">
+                            <mat-icon style="font-size: 20px;">people</mat-icon>Mis casos cerrados
+                        </button>
+                    </div>
+                    <div fxFlex="25%">
+                        <button mat-raised-button class="btn-black" (click)="ActualizarInformacionCasosGrupo()" style="font-size: 14px;">
+                            <mat-icon style="font-size: 20px;">people</mat-icon>Casos del Grupo
+                        </button>
+                    </div>
+                    <!-- <div fxFlex="25%">
+                        <button mat-raised-button class="btn-black" (click)="ActualizarInformacionCasosGrupo()" style="font-size: 14px;">
+                            <mat-icon style="font-size: 20px;">people</mat-icon>Casos del Proyecto
+                        </button>
+                    </div> -->
+                </div>
+            </mat-expansion-panel>
+            <mat-list>
+                <mat-list-item style="color: #000;">
+                    <mat-icon mat-list-icon>list_alt</mat-icon>
+                    <h4 mat-line>Resultados</h4>
+                    <span class="example-spacer"></span>
+                    <mat-progress-spinner *ngIf="!endloading" diameter="30" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                    </mat-progress-spinner>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </mat-list>
+            <div *ngIf="hayDatos && endloading" class="example-header mat-elevation-z2">
+                <mat-form-field>
+                    <input [disabled]="isDisabled" matInput (keyup)="AplicarFiltros($event.target.value)" placeholder="Buscar en los resultados">
+                </mat-form-field>
+            </div>
+            <br>
+            <div class="example-container mat-elevation-z2">
+                <mat-table *ngIf="endloading" [dataSource]="origenDatos" matSort>
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef> No. Caso </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">No. Caso:</span> {{row.id}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="fecCreacion">
+                        <mat-header-cell *matHeaderCellDef> Fecha Registro </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Fecha Registro:</span> {{row.fecCreacion | date:'d/MM/yyyy'}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="NombreEstado">
+                        <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Estado</span> {{row.NombreEstado}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="NombreCategoria">
+                        <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Categoria</span> {{row.NombreCategoria}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="NombreServicio">
+                        <mat-header-cell *matHeaderCellDef> Actuación </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Actuación</span> {{row.NombreServicio}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Responsable">
+                        <mat-header-cell *matHeaderCellDef> Responsable </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Responsable</span> {{row.NombreUsuarioAsignado}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Autor">
+                        <mat-header-cell *matHeaderCellDef> Autor </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Autor</span> {{row.NombreUsuarioCreacion}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Grupo">
+                        <mat-header-cell *matHeaderCellDef> Grupo </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Grupo</span> {{row.NombreGrupo}} </mat-cell>
+                        <mat-cell *matCellDef="let row"></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="acciones">
+                        <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span class="mobile-label">Acciones:</span>
+                            <button mat-icon-button matTooltip="Editar Caso" (click)="EditarCaso(row)" color="primary">
+                                <i class="fa fa-edit" style="font-size: 30px;"></i>
+                            </button>
+                            <button mat-icon-button matTooltip="Histórico Caso" (click)="AbrirHistoricoCaso(row)" color="primary">
+                                <i class="fa fa-history" style="font-size: 30px;"></i>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="columnasvisibles" class="encabezado"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: columnasvisibles;"></mat-row>
+                </mat-table>
+                <div *ngIf="!hayDatos && endloading" class="example-header" style="text-align: center;">
+                    <span style="color: grey; font-size: 18px;">Lista vacía</span>
+                </div>
+                <mat-paginator [disabled]="isDisabled" [pageSizeOptions]="[5, 10, 20, 25]" [pageSize]="5" [showFirstLastButtons]="true"></mat-paginator>
+            </div>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="end" style="margin: 8px;">
+        </mat-card-actions>
+    </mat-card>
+    <!-- </mat-step> 
+    </mat-horizontal-stepper>-->
+    <!-- </div> -->
+    <input type="hidden" #selection>
+</div>

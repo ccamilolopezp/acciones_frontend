@@ -1,0 +1,7 @@
+::ng-deep .mat-dialog-container {
+    padding: 0px !important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+    padding: 0 0 24px 0;
+}

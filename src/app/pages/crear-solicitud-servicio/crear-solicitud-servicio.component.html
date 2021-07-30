@@ -1,0 +1,431 @@
+<div id="pageregister" class="pageregisterstyle">
+    <div id="contentloading" style="width: 100%;" *ngIf="divload">
+        <div class="content" role="main">
+            <mat-progress-spinner diameter="50" class="example-margin" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+            </mat-progress-spinner>
+            <input type="hidden" #selection>
+            <!-- <footer style="position: fixed; bottom: 1px; height: 30px;">
+                <p class="text-muted text-center py-1">All rights reserved
+                    <mat-icon style="font-size: 16px; width: 16px; height: 16px;">copyright</mat-icon> Copyright</p>
+            </footer> -->
+        </div>
+    </div>
+    <div id="contentlogin" style="width: 100%; background-color: white;" *ngIf="divlogi">
+        <div class="content" style="background-color: white;" role="main">
+            <mat-card style="width: 100%;" class="mat-elevation-z6">
+                <mat-card-header>
+                    <mat-card-title *ngIf="!infoedit">Nueva Solicitud de servicio</mat-card-title>
+                    <mat-card-title *ngIf="infoedit">Cambiar Solicitud de servicio # {{infoedit.id}}</mat-card-title>
+                    <mat-card-subtitle *ngIf="!infoedit" style="color: #000;">
+                        Crear
+                    </mat-card-subtitle>
+                    <mat-card-subtitle *ngIf="infoedit" style="color: #000;">
+                        Editar (Fecha Creación: {{infoedit.fecCreacion | date:'d/MM/yyyy, h:mm a'}})
+                    </mat-card-subtitle>
+                    <span class="example-spacer"></span>
+                    <mat-progress-spinner *ngIf="!endloading" diameter="30" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                    </mat-progress-spinner>
+                    <button form="basicfrm" *ngIf="endloading" mat-raised-button style="color: white; height: 40px;" color="primary" (click)="Guardar()">
+                        Guardar
+                    </button>
+                    <button *ngIf="endloading" mat-raised-button (click)="Cancelar()" matTooltip="Cerrar Ventana" style="margin: 0 16px; height: 40px;">
+                        Cancelar
+                    </button>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-horizontal-stepper *ngIf="endloading" #stepper class="myHorizontalStepper">
+                        <mat-step style="width: 90% !important" completed="false">
+                            <ng-template matStepLabel>Información Básica</ng-template>
+                            <div fxLayoutAlign="center" style="text-align: center;">
+                                <h5>INFORMACIÓN BÁSICA</h5>
+                            </div>
+                            <div fxLayoutAlign="center" style="text-align: center;">
+                                <mat-progress-spinner *ngIf="!validatestep1" diameter="50" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                                </mat-progress-spinner>
+                            </div>
+                            <form [formGroup]="basicaForm" id="basicfrm" class="example-form" novalidate>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-label>Estado</mat-label>
+                                            <mat-select formControlName="estado" required>
+                                                <mat-option *ngFor="let item of listaestados" [value]="item.value">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-label>Grupo</mat-label>
+                                            <mat-select formControlName="grupo" required (selectionChange)="ChangeGrupo($event.value)">
+                                                <mat-option *ngFor="let item of listagrupos" [value]="item.value">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-label>Categoria</mat-label>
+                                            <mat-select formControlName="categoria" required (selectionChange)="ChangeCategoria($event.value)">
+                                                <mat-option *ngFor="let item of listacategorias" [value]="item.value">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-label>Actuaciones</mat-label>
+                                            <mat-select formControlName="servicio" required (selectionChange)="ChangeServicio($event.value)">
+                                                <mat-option *ngFor="let item of listaserviciosfiltro" [value]="item.value">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-label>Funcionario</mat-label>
+                                            <mat-select formControlName="funcionario" required>
+                                                <mat-option *ngFor="let item of listausuariosfiltro" [value]="item.value">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer" >
+                                        <mat-form-field style="width: 100%;" *ngIf="infoedit">
+                                            <mat-label>Resultados</mat-label>
+                                            <mat-select formControlName="resultado" required>
+                                                <mat-option *ngFor="let item of listaresultados" [value]="item.value">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="100%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <textarea rows="10" matInput placeholder="Descripción" formControlName="plantilla"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" *ngIf="infoedit" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="100%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <textarea rows="10" matInput placeholder="Solución" formControlName="solucion"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxLayoutAlign="center">
+                                    <button mat-raised-button class="btn-black" style="margin-right: 16px;" (click)="goNext()">
+                                        Siguiente
+                                        <mat-icon>navigate_next</mat-icon>
+                                    </button>
+                                </div>
+                            </form>
+                        </mat-step>
+                        <mat-step style="width: 90% !important" completed="false">
+                            <ng-template matStepLabel>Denunciante</ng-template>
+                            <div fxLayoutAlign="center" style="text-align: center;">
+                                <h5>INFORMACIÓN DENUNCIANTE</h5>
+                            </div>
+                            <div fxLayoutAlign="center" style="text-align: center;">
+                                <mat-progress-spinner *ngIf="!validatestep1" diameter="50" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                                </mat-progress-spinner>
+                            </div>
+                            <form [formGroup]="denuncianteForm" class="example-form" novalidate>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Identificación del Denunciante" required formControlName="numIdentificacionDenunciante">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Nombre del Denunciante" required formControlName="nombreDenunciante">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Dirección del Denunciante" required formControlName="direccionDenunciante">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="E-mail del Denunciante" required formControlName="emailDenunciante">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Edad del Denunciante" required formControlName="edadDenunciante">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-label>Localidad del Denunciante</mat-label>
+                                            <mat-select formControlName="localidadDenunciante" required>
+                                                <mat-option *ngFor="let item of listalocalidades" [value]="item.value">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput required placeholder="Telefono del Denunciante" formControlName="telefonoDenunciante">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+
+                                    </div>
+
+
+                                </div>
+
+                                <div fxLayoutAlign="center">
+                                    <button mat-raised-button class="btn-black" style="margin-right: 16px;" (click)="goBack()">
+                                        <mat-icon>navigate_before</mat-icon>
+                                        Atras
+                                    </button>
+                                    <button mat-raised-button class="btn-black" (click)="goNext()">
+                                        Siguiente
+                                        <mat-icon>navigate_next</mat-icon>
+                                    </button>
+                                </div>
+                            </form>
+                        </mat-step>
+                        <mat-step style="width: 90% !important" completed="false">
+                            <ng-template matStepLabel>Víctima</ng-template>
+                            <div style="text-align: center;">
+                                <h5>INFORMACIÓN VÍCTIMA</h5>
+                            </div>
+                            <form [formGroup]="victimaForm" class="example-form" novalidate *ngIf="!btnAgregaVehiculo">
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Identificación de la Victima" required formControlName="numIdentificacionVictima">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Nombre del Victima" required formControlName="nombreVictima">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Dirección de la Victima" required formControlName="direccionVictima">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="E-mail de la Victima" required formControlName="emailVictima">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Edad de la Victima" required formControlName="edadVictima">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-label>Localidad de la víctima</mat-label>
+                                            <mat-select formControlName="localidadVictima" required>
+                                                <mat-option *ngFor="let item of listalocalidades" [value]="item.value">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Telefono de la Victima" required formControlName="telefonoVictima">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50%" class="mycontainer">
+                                        <h5 style="margin-top: 16px;">
+                                            <mat-checkbox [disabled]="copiainfodenunciante" style="white-space: normal;" (change)="CopiarInfoDenunciante($event)">
+                                              Copiar información del denunciante
+                                            </mat-checkbox>
+                                          </h5>
+                                    </div>
+                                </div>
+                            </form>
+                            <div fxLayoutAlign="center">
+                                <button mat-raised-button class="btn-black" style="margin-right: 16px;" (click)="goBack()">
+                                    <mat-icon>navigate_before</mat-icon>
+                                    Atras
+                                </button>
+                                <button mat-raised-button class="btn-black" (click)="goNext()">
+                                    Siguiente
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                            </div>
+                        </mat-step>
+                        <mat-step style="width: 90% !important" completed="false">
+                            <ng-template matStepLabel>Adjuntos</ng-template>
+                            <div fxLayoutAlign="center" style="text-align: center;">
+                                <h5>ADJUNTOS</h5>
+                            </div>
+                            <form [formGroup]="adjuntoForm" class="example-form" novalidate>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="40%" class="mycontainer">
+                                        <mat-form-field>
+                                            <input matInput placeholder="Adjuntar archivo" formControlName="archivo">
+                                            <button mat-icon-button matSuffix (click)="onFileChange()">
+                                            <mat-icon style="font-size: 25px; width: auto;height: auto;">attach_file</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="40%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Nombre Archivo" formControlName="nombre">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="20%" class="mycontainer">
+                                        <button mat-raised-button class="btn-black" (click)="AgregarAdjunto()">
+                                            <mat-icon>add</mat-icon>AGREGAR ADJUNTO
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div fxLayoutAlign="center" style="text-align: center;">
+                                <mat-progress-spinner *ngIf="!validatestep1" diameter="50" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                                </mat-progress-spinner>
+                            </div>
+                            <div class="example-container mat-elevation-z2">
+                                <mat-table *ngIf="endloading" [dataSource]="origenDatos" matSort>
+                                    <ng-container matColumnDef="nombre">
+                                        <mat-header-cell *matHeaderCellDef> Nombre Archivo </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <span class="mobile-label">Nombre Archivo:</span> {{row.nombre}}
+
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="acciones">
+                                        <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <span class="mobile-label">Acciones:</span>
+                                            <!-- <a mat-flat-button href="https://localhost:44325/api/login/descargaradjunto/{{row.id}}">
+                                                <i class="fa fa-file" style="font-size: 20px;"></i> VER ARCHIVO</a> -->
+                                            <button *ngIf="row.id > 0" mat-icon-button matTooltip="Ver archivo" color="primary" (click)="PruebaDescargarAdjunto(row)">
+                                                <i class="fa fa-file" style="font-size: 20px;"></i>
+                                                VER ARCHIVO
+                                            </button>
+                                            <button *ngIf="row.id === 0" mat-icon-button matTooltip="Quitar archivo" (click)="BorrarAdjunto(row)" style="color: brown;">
+                                                <i class="fa fa-trash" style="font-size: 20px;"></i>
+                                                BORRAR
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="columnasvisibles" class="encabezado"></mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: columnasvisibles;"></mat-row>
+                                </mat-table>
+                                <div *ngIf="!hayDatos && endloading" class="example-header" style="text-align: center;">
+                                    <span style="color: grey; font-size: 18px;">Lista vacía</span>
+                                </div>
+                                <mat-paginator [disabled]="isDisabled" [pageSizeOptions]="[5, 10, 20, 25]" [pageSize]="5" [showFirstLastButtons]="true"></mat-paginator>
+                            </div>
+                            <div fxLayoutAlign="center" style="margin-top: 20px;">
+                                <button mat-raised-button class="btn-black" style="margin-right: 16px;" (click)="goBack()">
+                                    <mat-icon>navigate_before</mat-icon>
+                                    Atras
+                                </button>
+                                <button mat-raised-button class="btn-black" (click)="goNext()">
+                                    Siguiente
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                            </div>
+                        </mat-step>
+                        <mat-step style="width: 90% !important" completed="false">
+                            <ng-template matStepLabel>Notas</ng-template>
+                            <div fxLayoutAlign="center" style="text-align: center;">
+                                <h5>NOTAS</h5>
+                            </div>
+                            <form [formGroup]="notaForm" class="example-form" novalidate>
+                                <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="5%" fxLayoutAlign="center">
+                                    <div fxFlex="80%" class="mycontainer">
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput placeholder="Contenido de Nota" formControlName="contenido" required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="20%" class="mycontainer">
+                                        <button mat-raised-button class="btn-black" (click)="AgregarNota()">
+                                            <mat-icon>add</mat-icon>AGREGAR NOTA
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div fxLayoutAlign="center" style="text-align: center;">
+                                <mat-progress-spinner *ngIf="!validatestep1" diameter="50" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                                </mat-progress-spinner>
+                            </div>
+                            <div class="example-container mat-elevation-z2">
+                                <mat-table *ngIf="endloading" [dataSource]="origenDatos2" matSort>
+                                    <ng-container matColumnDef="contenido">
+                                        <mat-header-cell *matHeaderCellDef> Nota </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <span class="mobile-label">Nota:</span> {{row.contenido}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="acciones">
+                                        <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <span class="mobile-label">Acciones:</span>
+                                            <!-- <button *ngIf="row.id > 0" mat-icon-button matTooltip="Ver archivo" color="primary">
+                                                <i class="fa fa-file" style="font-size: 20px;"></i>
+                                                VER ARCHIVO
+                                            </button> -->
+                                            <!-- <a href="data:{{row.mimetype}};base64,{{row.archivo}}" target="_blank" download>Download Single Document</a> -->
+                                            <!-- <a [href]="sanitize(row.ruta)" target="_blank">Download Single Document</a> -->
+                                            <button *ngIf="row.id === 0" mat-icon-button matTooltip="Quitar nota" (click)="BorrarNota(row)" style="color: brown;">
+                                                <i class="fa fa-trash" style="font-size: 20px;"></i>
+                                                BORRAR
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="columnasvisibles2" class="encabezado"></mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: columnasvisibles2;"></mat-row>
+                                </mat-table>
+                                <div *ngIf="!hayDatos2 && endloading" class="example-header" style="text-align: center;">
+                                    <span style="color: grey; font-size: 18px;">Lista vacía</span>
+                                </div>
+                                <mat-paginator [disabled]="isDisabled" [pageSizeOptions]="[5, 10, 20, 25]" [pageSize]="5" [showFirstLastButtons]="true"></mat-paginator>
+                            </div>
+                            <div fxLayoutAlign="center" style="margin-top: 20px;">
+                                <button mat-raised-button class="btn-black" (click)="goBack()">
+                                    <mat-icon>navigate_before</mat-icon>Atras
+                                </button>
+                            </div>
+                        </mat-step>
+                    </mat-horizontal-stepper>
+                </mat-card-content>
+            </mat-card>
+            <div *ngIf="finproceso" style="text-align: center; margin-top: 10px;">
+                <p style="font-size: 20px; font-weight: bold;">¡Solicitud se Guardo Correctamente!</p>
+            </div>
+            <input type="hidden" #selection>
+        </div>
+    </div>
+</div>
+<input style="display: none" #imageInput type="file" accept="image/*,.pdf,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" (change)="selectFile($event)">

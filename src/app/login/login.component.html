@@ -1,0 +1,114 @@
+﻿<!-- <div *ngIf="loading" class="overlay">
+  <mat-progress-spinner
+    diameter="50"
+    class="example-margin"
+    [color]="mpbcolor"
+    [mode]="mpbmode"
+    [value]="mpbvalue">
+  </mat-progress-spinner>
+</div> -->
+<div id="pageregister" class="pageregisterstyle">
+    <div id="contentloading" style="width: 100%;" *ngIf="divload">
+        <div class="content" role="main">
+            <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+                <img alt="avtar" class="img-fluid mx-auto d-block mb-1" src="./assets/img/logo-bta-png.png" width="300">
+            </div>
+            <mat-progress-spinner diameter="50" class="example-margin" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+            </mat-progress-spinner>
+            <input type="hidden" #selection>
+            <!-- <footer style="position: fixed; bottom: 1px; height: 30px;">
+                <p class="text-muted text-center py-1">All rights reserved
+                    <mat-icon style="font-size: 16px; width: 16px; height: 16px;">copyright</mat-icon> Copyright</p>
+            </footer> -->
+        </div>
+    </div>
+    <div id="contentserveroff" style="width: 100%; padding-top: 25px;" *ngIf="divoffs">
+        <div class="content" role="main">
+            <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+                <img alt="avtar" class="img-fluid mx-auto d-block mb-1" src="./assets/img/logo-bta-png.png" width="300">
+            </div>
+            <h3>¡Estamos mejorando para ti!</h3>
+            <div style="text-align: center; margin-top: 50px;">
+                <p>En estos momentos trabajamos para ofrecerte el mejor servicio.
+                    <br> Vuelve más tarde.</p>
+            </div>
+            <input type="hidden" #selection>
+            <!-- <footer style="position: fixed; bottom: 10px; height: 30px;">
+                <p class="text-muted text-center py-1">All rights reserved
+                    <mat-icon style="font-size: 16px; width: 16px; height: 16px;">copyright</mat-icon> Copyright</p>
+            </footer> -->
+        </div>
+    </div>
+    <div id="contentlogin" style="width: 100%; background-color: white;" *ngIf="divlogi">
+        <div class="content" role="main">
+            <mat-card class="mat-elevation-z4" style="margin-top: 30px;">
+                <div style="text-align: center; margin-top: 30px; margin-bottom: 10px;">
+                    <img alt="avtar" class="img-fluid mx-auto d-block mb-1" src="./assets/img/logo-bta-png.png" width="300">
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <!-- <p style="font-size: 20px;">INGRESO CONTROLINTERNO</p> -->
+                    <h5>INGRESO CONTROL INTERNO</h5>
+                </div>
+                <form [formGroup]="loginForm" class="example-form" (ngSubmit)="onSubmit()" novalidate>
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Alias o Correo electrónico</mat-label>
+                            <input matInput cdkFocusInitial placeholder="Correo electrónico" formControlName="username" required>
+                            <!-- <mat-icon matSuffix>person</mat-icon> -->
+                            <!-- <mat-hint>Hint</mat-hint> -->
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Clave</mat-label>
+                            <input matInput type="password" placeholder="Clave" formControlName="password" required>
+                            <!-- <mat-icon matSuffix>lock</mat-icon> -->
+                            <!-- <mat-hint>Hint</mat-hint> -->
+                        </mat-form-field>
+                    </div>
+                    <div fxLayoutAlign="center" style="text-align: center;">
+                        <mat-error *ngIf="msgErrorIngreso !== ''">{{msgErrorIngreso}}</mat-error>
+                    </div>
+                    <div class="card-container">
+                        <mat-progress-spinner *ngIf="loading" diameter="50" class="example-margin" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                        </mat-progress-spinner>
+                        <button mat-raised-button color="primary" style="width: 200px; height: 40px; color: #FFF; font-size: 16px; margin-bottom: 7px;" *ngIf="!loading">Entrar</button>
+                        <!-- <a mat-button (click)="RecordarClave()" routerLink="." *ngIf="!loading">Recordar Clave</a> -->
+                    </div>
+                </form>
+            </mat-card>
+            <input type="hidden" #selection>
+        </div>
+    </div>
+    <div id="contentGetPass" style="width: 100%;" *ngIf="divgetpass">
+        <div class="content" role="main">
+            <mat-card class="mat-elevation-z4" style="margin-top: 30px;">
+                <div style="text-align: center; margin-top: 30px; margin-bottom: 10px;">
+                    <img alt="avtar" class="img-fluid mx-auto d-block mb-1" src="./assets/img/logo-bta-png.png" width="300">
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <p style="font-size: 20px; color: orange;">Recuperar Clave</p>
+                </div>
+                <form class="example-form" novalidate>
+                    <div class="form-group" style="margin-bottom: 0px !important;">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Correo electrónico</mat-label>
+                            <input matInput cdkFocusInitial placeholder="Correo electrónico" [formControl]="correoCtrl" required>
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayoutAlign="center" style="text-align: center;">
+                        <mat-error *ngIf="msgErrorRecuperarClave !== ''">{{msgErrorRecuperarClave}}</mat-error>
+                    </div>
+                    <div class="card-container">
+                        <mat-progress-spinner *ngIf="loading" diameter="50" class="example-margin" [color]="mpbcolor" [mode]="mpbmode" [value]="mpbvalue">
+                        </mat-progress-spinner>
+                        <button mat-raised-button color="primary" (click)="EnviarClave()" style="width: 200px; height: 40px; color: #FFF; font-size: 16px; margin-bottom: 7px;" *ngIf="!loading">Enviar Solicitud</button>
+                        <a mat-button (click)="IraIngreso()" routerLink="." *ngIf="!loading">Cancelar</a>
+                    </div>
+                </form>
+            </mat-card>
+            <input type="hidden" #selection>
+        </div>
+    </div>
+</div>
